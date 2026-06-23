@@ -71,10 +71,12 @@ jobs:
 
       - name: Archive (Release)
         run: |
+          BN=$(date +%s)   # epoch → always-increasing CFBundleVersion (> any prior build)
+          echo "Build number: $BN"
           xcodebuild -project "$XCODE_PROJECT" -scheme "$XCODE_SCHEME" \
             -configuration Release \
             -archivePath "$RUNNER_TEMP/$APP_NAME.xcarchive" \
-            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            CURRENT_PROJECT_VERSION=$BN \
             archive
 
       - name: Import installer certificate (.p12)
